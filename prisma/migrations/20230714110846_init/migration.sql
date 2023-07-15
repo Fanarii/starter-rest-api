@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `menu` MODIFY `quantity` INTEGER NOT NULL DEFAULT 1;
