@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,27 +8,33 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String
-  order Order[]
+  id            Int     @id @default(autoincrement())
+  name          String
+  role          String
+  staffPassword String? @default("staff123")
+  isUsed        Boolean @default(false)
+  orderId       Int?    @unique
+  order         Order?
 }
 
 model Order {
   id           Int    @id @default(autoincrement())
   customerName String
-  customer     User   @relation(fields: [customerId], references: [id])
-  customerId   Int
+  totalAmount  Int
+  customerId   Int?   @unique
+  customer     User?  @relation(fields: [customerId], references: [id])
   menu         Menu[]
 }
 
 model Menu {
-  id       Int     @id @default(autoincrement())
+  id       Int    @id @default(autoincrement())
   name     String
   price    Int
   category String
-  quantity Int     @default(1)
+  quantity Int    @default(1)
   file     String
   url      String
-  stock    Int @default(0)
-  order    Order[]
+  stock    Int    @default(0)
+  order_id Int?
+  order    Order? @relation(fields: [order_id], references: [id])
 }

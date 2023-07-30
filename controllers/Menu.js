@@ -5,12 +5,22 @@ import fs from 'fs';
 const prisma = new PrismaClient();
 
 export const getMenus = async (req, res) => {
-    try {
-        const response = await prisma.menu.findMany();
-        res.json(response);
-    } catch (error) {
-        res.status(500).json({ msg: error.message });
-    }
+  try {
+      const response = await prisma.menu.findMany({
+          where: {
+              NOT: {
+                  order_id: {
+                      not: null,
+                  },
+              },
+          },
+      });
+
+      res.json(response);
+  } catch (error) {
+      res.status(500).json({ msg: error.message });
+      console.log(error)
+  }
 };
 
 export const getMenuById = async (req, res) => {
@@ -43,7 +53,7 @@ export const createMenu = async (req, res) => {
         if (error) return res.status(500).json({ msg: error.message });
         try {
             await prisma.menu.create({
-                data: { name: name, price: parseInt(price), category: category, url: url, file: fileName },
+                data: { name: name, price: parseInt(price), category: category, url: url, file: fileName, stock: parseInt(req.body.stock) },
             });
             res.status(201).json({ msg: 'Menu created successfully' });
         } catch (error) {
@@ -98,7 +108,7 @@ export const updateMenu = async (req, res) => {
         try {
           await prisma.menu.update({
             where: { id: menuId },
-            data: { name, price: parseInt(price), category, url, file: fileName },
+            data: { name, price: parseInt(price), category, url, file: fileName, stock: parseInt(req.body.stock) },
           });
           res.status(200).json({ msg: 'Menu updated successfully' });
         } catch (error) {
@@ -109,7 +119,7 @@ export const updateMenu = async (req, res) => {
       try {
         await prisma.menu.update({
           where: { id: menuId },
-          data: { name, price: parseInt(price), category, url: menu.url, file: menu.file },
+          data: { name, price: parseInt(price), category, url: menu.url, file: menu.file, stock: parseInt(req.body.stock) },
         });
         res.status(200).json({ msg: 'Menu updated successfully' });
       } catch (error) {

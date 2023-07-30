@@ -1,13 +1,14 @@
 import express from 'express'
 import { createMenu, deleteMenu, getMenuById, getMenus, updateMenu } from '../controllers/Menu.js'
+import { staffOnly, verifyUser } from '../controllers/Middleware.js';
 
-const router = express.Router()
+const router = express.Router();
 
-router.get('/menus', getMenus)
-router.get('/menus/:id', getMenuById)
-router.post('/menus', createMenu)
-router.patch('/menus/:id', updateMenu)
-router.delete('/menus/:id', deleteMenu)
+router.get('/menus', getMenus);
+router.get('/menus/:id', getMenuById);
+router.post('/menus', createMenu);
+router.patch('/menus/:id',  updateMenu);
+router.delete('/menus/:id', deleteMenu);
 
 
 export default router
