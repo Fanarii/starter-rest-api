@@ -21,6 +21,7 @@ model Order {
   id           Int    @id @default(autoincrement())
   customerName String
   totalAmount  Int
+  meja         String
   customerId   Int?   @unique
   customer     User?  @relation(fields: [customerId], references: [id])
   menu         Menu[]

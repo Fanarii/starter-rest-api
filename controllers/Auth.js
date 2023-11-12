@@ -73,11 +73,30 @@ export const Logout = (req, res) => {
 
 export const Me = async (req, res) => {
   try {
-    const user = req.session.userId;
-    if (!user) return res.status(400).json({ msg: 'silahkan login terlebih dahulu' });
+    const userId = req.session.userId;
+
+    if (!userId) {
+      return res.status(400).json({ msg: 'Silahkan login terlebih dahulu.' });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        role: true,
+      },
+    });
+
+    if (!user) {
+      return res.status(404).json({ msg: 'Pengguna tidak ditemukan.' });
+    }
+
     res.json(user);
   } catch (error) {
-    res.json(error);
-    console.log(error);
+    console.error('Error saat memuat data pengguna:', error);
+    res.status(500).json({ msg: 'Terjadi kesalahan saat memuat data pengguna.' });
   }
 };

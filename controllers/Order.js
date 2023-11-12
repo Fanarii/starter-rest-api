@@ -37,12 +37,13 @@ export const getOrderById = async (req, res) => {
 };
 
 export const createOrder = async (req, res) => {
-    const { customerName, menu, totalAmount } = req.body;
+    const { customerName, menu, totalAmount, table } = req.body;
     try {
         const orderResponse = await prisma.order.create({
             data: {
                 customerName: customerName,
                 totalAmount: parseInt(totalAmount),
+                meja: table
             },
         });
         const orderId = orderResponse.id;
@@ -71,6 +72,7 @@ export const createOrder = async (req, res) => {
         res.status(200).json(response);
     } catch (error) {
         res.status(500).json({ msg: error.message });
+        console.log(error)
     }
 };
 

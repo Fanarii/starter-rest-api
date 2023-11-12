@@ -16,9 +16,9 @@ app.use(express.static('./public'))
 app.use(fileUpload())
 
 app.use(session({
-    secret: 'idjwoaijdshdiwh2g382gysgdh',
+    secret: 'idjwoaijdshdiwh2g382dywgduywtuywsyu',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: {secure: 'auto'}
 }))
 
